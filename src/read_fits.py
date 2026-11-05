@@ -1,5 +1,6 @@
 # define libraries 
 from astropy.io import fits
+import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -10,15 +11,15 @@ mars = '/home/stefan/files/Projects/Licenta/src/assets/HS-L0-FE-025D-05-01_1C.fi
 sensor = '/home/stefan/files/Projects/Licenta/src/assets/CRS-HERA-SW101-HyperScout-H-detector-per-pixel-central-wavelength-map.fits'
 
 
-# define the function whici opens and extracts the wavelengths and reflectance values
+# define the function which opens and extracts the wavelengths and reflectance values
 
 def read(image, layout):
 
-    # open the iamge
+    # open the image
     with fits.open(image) as hdul:
         mars_data = hdul[0].data
 
-    # open the wl layout
+    # open the wl sensor layout
     with fits.open(layout) as hdul:
         layout_data = hdul[0].data
 
@@ -48,14 +49,8 @@ def collapse_wl(wl_layout):
     # collapse corresponding positions across all tiles into one representative 5 x 5 layout
     raw_wl = np.median(reshaped, axis = (0, 2))
 
-    wl_flatten = raw_wl.flatten()
-    sorted_wl = np.sort(wl_flatten)
-    wlidx = np.argsort(np.argsort(wl_flatten))
+    wl_flatten = raw_wl.flatten() # flatten the sensor matrix
+    sorted_wl = np.sort(wl_flatten) # sort the wavelenghts
+    wlidx = np.argsort(np.argsort(wl_flatten)) # extract the sorted wavelengths
 
     return raw_wl, sorted_wl, wlidx
-
-
-
-
-if __name__ == '__main__':
-    data, hsh = read(mars, sensor)
