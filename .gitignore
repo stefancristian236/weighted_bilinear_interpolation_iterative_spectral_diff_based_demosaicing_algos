@@ -1,2 +1,4 @@
+# auxiliar files
 .venv
 assets
+src/__pycache__

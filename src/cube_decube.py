@@ -33,7 +33,7 @@ def cube(
 ):
     # extract the MSFA filter featured arrays
 
-    raw_wl, sorted_wl, wlidx = cw(sensor_layout)
+    _, _, wlidx = cw(sensor_layout)
 
 
     # define the cube parameters
@@ -87,3 +87,34 @@ def cube(
 """
     unpack the 3D cube into a 2D(h x w) image
 """
+
+
+def decube (
+        cubed_image : np.ndarray,
+        sensor_layout : np.ndarray
+):
+
+    # extract cube shape
+    mx, my, _ = cubed_image.shape
+
+
+    raw_wl, sorted_wl, wlidx = cw(sensor_layout)
+    flat_wl = raw_wl.flatten()
+    # find the matchign distance based on distance
+
+    match_dist = np.abs(sorted_wl[:, None] - flat_wl[None, :])
+    band_pos = np.argmin(match_dist, axis = 0)
+    band_pos = band_pos.reshape(5, 5)
+
+    # resize to the original size
+
+    size_x, size_y = mx * 5, my * 5
+    recon_image = np.zeros((size_x, size_y), dtype = float)
+
+    # reconstruct the image
+    for idx0 in range(5):
+        for idx1 in range(5):
+            band_idx = band_pos[idx0, idx1]
+            recon_image[idx0::5, idx1::5] = cubed_image[:, :, band_idx]
+
+    return recon_image

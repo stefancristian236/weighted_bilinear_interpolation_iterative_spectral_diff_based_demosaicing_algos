@@ -1,14 +1,38 @@
-# define libraries 
+###################################################################
+###################################################################
+###################################################################
+
+
+"""
+    libraries and functions definition
+"""
+
+
+
+
 from astropy.io import fits
 import matplotlib.pyplot as plt
 import numpy as np
 
 
+###################################################################
+###################################################################
+###################################################################
 
-# path target to Mars and detector layount .fits images
+
+"""
+    define the path to the source data
+
+"""
 
 mars = '/home/stefan/files/Projects/Licenta/src/assets/HS-L0-FE-025D-05-01_1C.fits'
 sensor = '/home/stefan/files/Projects/Licenta/src/assets/CRS-HERA-SW101-HyperScout-H-detector-per-pixel-central-wavelength-map.fits'
+
+
+###################################################################
+###################################################################
+###################################################################
+
 
 
 # define the function which opens and extracts the wavelengths and reflectance values
