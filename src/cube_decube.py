@@ -40,8 +40,8 @@ def cube(
 
     x_side, y_side = hyperspectral_image.shape
     cube_size = 25
-    x_out = int(np.ceil(x_side / 25) * 25)
-    y_out = int(np.ceil(y_side / 25) * 25)
+    x_out = int(np.ceil(x_side / 5) * 5)
+    y_out = int(np.ceil(y_side / 5) * 5)
 
 
     # start building the empy cube
@@ -53,7 +53,7 @@ def cube(
         constant_values = fill_value,
     )    
 
-    mx, my = x_out // 25, y_out // 25
+    mx, my = x_out // 5, y_out // 5
     packed_cube = np.zeros((mx, my, cube_size), dtype = float)
 
 
@@ -68,8 +68,8 @@ def cube(
 
     # crop the macropixel
 
-    mx_valid = int(np.ceil(x_side / 25))
-    my_valid = int(np.ceil(y_side / 25))
+    mx_valid = int(np.ceil(x_side / 5))
+    my_valid = int(np.ceil(y_side / 5))
 
     return packed_cube[:mx_valid, :my_valid, :]
 
@@ -108,7 +108,7 @@ def decube (
 
     # resize to the original size
 
-    size_x, size_y = mx * 25, my * 25
+    size_x, size_y = mx * 5, my * 5
     recon_image = np.zeros((size_x, size_y), dtype = float)
 
     # reconstruct the image
@@ -117,4 +117,4 @@ def decube (
             band_idx = band_pos[idx0, idx1]
             recon_image[idx0::5, idx1::5] = cubed_image[:, :, band_idx]
 
-    return recon_image[:1088 * 5, :2048 * 5]
+    return recon_image
