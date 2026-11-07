@@ -117,4 +117,4 @@ def decube (
             band_idx = band_pos[idx0, idx1]
             recon_image[idx0::5, idx1::5] = cubed_image[:, :, band_idx]
 
-    return recon_image
+    return recon_image[:1088, :2048]
