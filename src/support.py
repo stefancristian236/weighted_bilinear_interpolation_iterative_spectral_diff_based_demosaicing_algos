@@ -1,7 +1,5 @@
 import numpy as np
 
-
-
 def reduce_intwerp(
         hyp_cube_interp : np.ndarray,
         hyp_cube_original : np.ndarray
@@ -10,8 +8,8 @@ def reduce_intwerp(
     H, W, B = hyp_cube_interp.shape
     h, w = hyp_cube_original.shape[:2]
 
-    pad_h = (h * 5) - h
-    pad_w = (w * 5) - w
+    pad_h = (h * 5) - H
+    pad_w = (w * 5) - W
 
     padded = np.pad(
         hyp_cube_interp,
@@ -20,7 +18,12 @@ def reduce_intwerp(
         constant_values=np.nan
     )
 
-    for idx in range(25):
-        padded[:, :, idx] = hyp_cube_interp[:, :, idx].reshape(218, 5, 410, 5)
+    H_pad, W_pad, C = padded.shape
+    new_h, new_w = H_pad // 5, W_pad // 5
+    reduced_cube = np.empty((new_h, new_w, C), dtype=padded.dtype)
 
-    return np.nanmedian(padded, axis = (1, 3))
+    for idx in range(C):
+        layer_blocks = padded[:, :, idx].reshape(new_h, 5, new_w, 5)
+        reduced_cube[:, :, idx] = np.nanmedian(layer_blocks, axis=(1, 3))
+
+    return reduced_cube

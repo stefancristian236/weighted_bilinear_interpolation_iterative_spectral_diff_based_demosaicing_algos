@@ -89,7 +89,8 @@ H_filter = F.astype(np.float32) / cF
 B = 5 # grid size
 
 def interpolate(
-        hyp_image : np.ndarray
+        hyp_image : np.ndarray,
+        sensor_layout : np.ndarray = None
 ):
     H_sub, W_sub, num_bands = hyp_image.shape
     
@@ -102,10 +103,16 @@ def interpolate(
         dtype = np.float32
     )
 
+    if sensor_layout is not None:
+        _, _, wlidx = read_fits.collapse_wl(sensor_layout)
+    else:
+        wlidx = np.arange(num_bands)
+
     for idx0 in range(25):
         # row and col offset from original image
         r_offset = idx0 // B
         c_offset = idx0 % B
+        band_idx = wlidx[idx0]
 
         # create the expanded layer 
         expandedLayer = np.zeros(
@@ -114,11 +121,11 @@ def interpolate(
         )
 
         # place the known pixels in theyr exact relative position
-        expandedLayer[r_offset::B, c_offset::B] = hyp_image[:, :, idx0]
+        expandedLayer[r_offset::B, c_offset::B] = hyp_image[:, :, band_idx]
 
         # apply the filter
 
-        demoCube[:, :, idx0] = convolve2d(
+        demoCube[:, :, band_idx] = convolve2d(
             expandedLayer,
             H_filter,
             mode = 'same',
