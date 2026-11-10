@@ -13,7 +13,10 @@
             m(k) =
                     0, otherwise
 
-    2. I(p, k) = IMSFA(p) (p) + delta(k,l)
+
+
+    2. I(p, k) = IMSFA(p) (p) + ~delta(k,l)
+    where ~delta(k,l) = delta(k, l) conv H
 """
 
 #######################################################
@@ -25,12 +28,19 @@
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
 import bilinear_interpolation as WB
 import read_fits
+import support
 
 _ , sensor_layout = read_fits.read()
 
 def sparse_diff(hyp_cube : np.ndarray) -> np.ndarray:
 
+    # extract required hyper cubes
     hyp_cube_WB = WB.interpolate(hyp_cube, sensor_layout)
+    hyp_cube_WB = support.reduce_intwerp(
+        hyp_cube,
+        hyp_cube_WB
+    )
+
+    

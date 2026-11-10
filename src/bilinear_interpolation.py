@@ -18,6 +18,8 @@
     calcualte the normalization facto cF
     H(a,b) = F / cF
 
+    H is built on a basic tent function
+        - try different generator functions
 """
 
 ########################################################
