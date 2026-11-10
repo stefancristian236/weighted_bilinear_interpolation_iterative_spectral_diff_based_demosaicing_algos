@@ -11,7 +11,6 @@
 
 
 from astropy.io import fits
-import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -25,9 +24,8 @@ import numpy as np
 
 """
 
-mars = '/home/stefan/files/Projects/Licenta/src/assets/HS-L0-FE-025D-05-01_1C.fits'
-sensor = '/home/stefan/files/Projects/Licenta/src/assets/CRS-HERA-SW101-HyperScout-H-detector-per-pixel-central-wavelength-map.fits'
-
+mars = '../assets/HS-L0-FE-025D-05-01_1C.fits'
+sensor = '../assets/CRS-HERA-SW101-HyperScout-H-detector-per-pixel-central-wavelength-map.fits'
 
 ###################################################################
 ###################################################################
@@ -37,7 +35,8 @@ sensor = '/home/stefan/files/Projects/Licenta/src/assets/CRS-HERA-SW101-HyperSco
 
 # define the function which opens and extracts the wavelengths and reflectance values
 
-def read(image, layout):
+def read(image : np.ndarray,
+         layout : np.ndarray) -> tuple[np.ndarray, np.ndarray]:
 
     # open the image
     with fits.open(image) as hdul:
@@ -54,10 +53,10 @@ def read(image, layout):
 
 # collapse the 2048 x 1088 wl array into a size 25 array by median values
 
-def collapse_wl(wl_layout):
+def collapse_wl(wl_layout : np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
 
     # get dimensions
-    h, w = wl_layout.shape
+    h, w = wl_layout[:2].shape
 
     # make dimensions divisible by 5
     h_trim = h - (h % 5)
