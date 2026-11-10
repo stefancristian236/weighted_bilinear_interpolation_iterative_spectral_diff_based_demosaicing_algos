@@ -35,8 +35,8 @@ sensor = '../assets/CRS-HERA-SW101-HyperScout-H-detector-per-pixel-central-wavel
 
 # define the function which opens and extracts the wavelengths and reflectance values
 
-def read(image : np.ndarray,
-         layout : np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+def read(image = mars,
+         layout = sensor) -> tuple[np.ndarray, np.ndarray]:
 
     # open the image
     with fits.open(image) as hdul:
