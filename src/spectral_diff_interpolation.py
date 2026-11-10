@@ -18,7 +18,9 @@
     2. I(p, k) = IMSFA(p) (p) + ~delta(k,l)
     where ~delta(k,l) = delta(k, l) conv H
 """
+import bilinear_interpolation
 import matplotlib.pyplot as plt
+from wcwidth.table_grapheme import INCB_CONSONANT
 
 """
     build the S matrix
@@ -78,19 +80,28 @@ def extract_m(arrS : np.ndarray) -> np.ndarray:
 
 def sparse_diff(hyp_cube : np.ndarray) -> np.ndarray:
 
-    # extract required hyper cubes and parameters
-    hyp_cube_WB = WB.interpolate(hyp_cube, sensor_layout)
-    hyp_cube_WB = support.reduce_intwerp(
-        hyp_cube,
-        hyp_cube_WB
-    )
+    _S = extract_S(cube_decube.cube(mars_img, sensor_layout))
+    _m = extract_m(_S)
+
+    hyp_cube_WB = WB.interpolate(cube_decube.cube(mars_img, sensor_layout), sensor_layout)
+
+    prod = hyp_cube_WB[:1088, :2048, :] * _m
+    print(prod.shape)
+    prod_red = support.reduce_intwerp(prod, cube_decube.cube(mars_img, sensor_layout))
+    S_red = support.reduce_intwerp(_S, cube_decube.cube(mars_img, sensor_layout))
+
+    delta = S_red - prod_red
+
+    I_crown = cube_decube.cube(mars_img, sensor_layout) + delta
+
+    return bilinear_interpolation.interpolate(I_crown, sensor_layout)
 
 
+def run_pipeline():
+    im_sd = sparse_diff(cube_decube.cube(mars_img, sensor_layout))
+    img = cube_decube.decube(im_sd, sensor_layout)
 
+    return img
 
 if __name__ == '__main__':
-    _S = extract_S(cube_decube.cube(mars_img, sensor_layout))
-
-    _m = extract_m(_S)
-    plt.imshow(_m[:, :, 10], origin = 'lower', cmap = 'gray')
-    plt.show()
+    run_pipeline()
