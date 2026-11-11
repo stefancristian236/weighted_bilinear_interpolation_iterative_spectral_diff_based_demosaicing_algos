@@ -11,7 +11,7 @@ import numpy as np
 """
 
 
-def reduce_intwerp(
+def reduce_interp(
         hyp_cube_interp : np.ndarray,
         hyp_cube_original : np.ndarray
 ):

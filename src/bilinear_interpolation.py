@@ -79,7 +79,8 @@ F = np.array([
     [2, 4, 6, 8, 10, 8, 6, 4, 2],
     [1, 2, 3, 4, 5, 4, 3, 2, 1]
 ])
-
+# NOTE: more efficient to automatically calculate the tent function 5 - |a|
+    # do the tensor product to get the F matrix
 
 # calculation fo the normalization factor cF
 
