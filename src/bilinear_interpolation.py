@@ -57,6 +57,12 @@ import cube_decube
  [ 2  4  6  8 10  8  6  4  2]
  [ 1  2  3  4  5  4  3  2  1]]
 
+F is constructed from the tent function
+v(x) = max(0, 5 - |x|) = 5 - |x|, for x in (-5, 5)
+
+in 1D F(x) = v(x)
+in 2D is a tensor product F(x) = v(x) v_transpose(x)
+
 """
 
 
