@@ -31,7 +31,6 @@ def reduce_interp(
         constant_values=np.nan
     )
 
-
     H_pad, W_pad, C = padded.shape
     new_h, new_w = H_pad // 5, W_pad // 5
     reduced_cube = np.empty((new_h, new_w, C), dtype=padded.dtype)

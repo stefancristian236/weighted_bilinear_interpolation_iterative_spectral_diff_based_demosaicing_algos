@@ -120,8 +120,8 @@ def sparse_diff(hyp_cube : np.ndarray) -> np.ndarray:
     hyp_cube_WB = WB.interpolate(cube_decube.cube(mars_img, sensor_layout), sensor_layout)
 
     prod = np.multiply(hyp_cube_WB[:1088, :2048, :], _m)
-    prod_red = support.reduce_intwerp(prod, cube_decube.cube(mars_img, sensor_layout))
-    S_red = support.reduce_intwerp(_S, cube_decube.cube(mars_img, sensor_layout))
+    prod_red = support.reduce_interp(prod, cube_decube.cube(mars_img, sensor_layout))
+    S_red = support.reduce_interp(_S, cube_decube.cube(mars_img, sensor_layout))
 
     delta = S_red - prod_red
 
